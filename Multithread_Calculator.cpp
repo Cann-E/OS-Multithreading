@@ -14,19 +14,19 @@ struct operation
 
 void *calculator(void *pos_void_ptr)
 {
-	struct operation *pos_ptr = (struct operation *) pos_void_ptr; // cast pos_void_ptr to a struct operation *
+	struct operation *pos_ptr = (struct operation *)pos_void_ptr;
     switch(pos_ptr->op)
     {
-        case 0: pos_ptr->result = pos_ptr->val1 + pos_ptr->val2; 
+        case 0: pos_ptr->result=pos_ptr->val1+pos_ptr->val2;
                 break;
-        case 1: pos_ptr->result = pos_ptr->val1 - pos_ptr->val2; 
+        case 1: pos_ptr->result=pos_ptr->val1-pos_ptr->val2;
                 break;
-        case 2: pos_ptr->result = pos_ptr->val1 * pos_ptr->val2; 
+        case 2: pos_ptr->result=pos_ptr->val1*pos_ptr->val2;
                 break;
-        case 3: if (pos_ptr->val2 != 0)
-                    pos_ptr->result = (double) pos_ptr->val1 / pos_ptr->val2; 
+        case 3: if (pos_ptr->val2 !=0)
+                    pos_ptr->result=(double)pos_ptr->val1/ pos_ptr->val2;
                 else
-                    pos_ptr->result = 0;         
+                    pos_ptr->result=0;
                 break;
     }
 	return NULL;
@@ -42,15 +42,19 @@ int main()
 		operations[i].op = i;
         std::cin >> operations[i].val1;
         std::cin >> operations[i].val2;
-		if(pthread_create(&tid[i],nullptr,calculator,&operations[i])) 
+		if(pthread_create(&tid[i],NULL,calculator,&operations[i])) 
 		{
 			fprintf(stderr, "Error creating thread\n");
 			return 1;
 
 		}		
 	}
-	for(int i=0;i<NOPER;i++)
-	    pthread_join(tid[i],nullptr);
+	
+    for(int i=0;i<NOPER;i++){
+        pthread_join(tid[i],nullptr);
+    }
+	// Wait for the other threads to finish.
+    // Call pthread_join here
     
     for (int i = 0; i < NOPER; i++)
     {
