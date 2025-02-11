@@ -15,7 +15,7 @@ struct Calculation
 // Function to be executed by threads
 void *compute(void *arg)
 {
-    struct Calculation *calc_ptr = (Calculation *)arg; // (1) Cast arg to struct Calculation *
+    struct Calculation *calc_ptr = (struct Calculation *)arg; // (1) Cast arg to struct Calculation *
 
     switch (calc_ptr->operation)
     {
@@ -29,7 +29,7 @@ void *compute(void *arg)
             calc_ptr->result = calc_ptr->num1 * calc_ptr->num2; // Multiplication
             break;
         case 3: 
-            if (calc_ptr->num2 != 0) // Division with zero check
+            if (calc_ptr->output != 0) // Division with zero check
                 calc_ptr->result = static_cast<double>(calc_ptr->num1) / calc_ptr->num2;
             else
                 calc_ptr->result = 0.00; 
