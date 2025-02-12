@@ -38,11 +38,14 @@ int main(){
 
   for (int i=0; i<nums.size(); i++){ //loop 4 times with the example of "1234"
     args[i].input = //set the inputs into individual argument
-    //pthread_create here
+    pthread_create(&tid[i],nullptr,decrementEvens,&args[i]);//pthread_create here
 
   }
 
   //pthread_join here
+  for(int i=0;i<nums.size();i++){
+    pthread_join(tid[i],nullptr);
+  }
 
   for (int i=0; i<nums.size(); i++){
     cout << args[i].output << " ";
