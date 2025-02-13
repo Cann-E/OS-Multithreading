@@ -1,7 +1,7 @@
 #include <pthread.h>
 #include <iostream>
 #include <unistd.h>
-#include <string>
+#include <string.h>
 
 struct arguments
 {
@@ -10,12 +10,19 @@ struct arguments
     int *array;
 };
 
-void *incrementElement(void *void_ptr)
+void rotateLeft(int *array, int size)
 {
-    arguments *arg_ptr = (struct arguments *)void_ptr;// cast the void pointer to a struct arguments pointer
+    int first = array[0];
+    for (int i = 0; i < size - 1; i++)
+        array[i] = array[i + 1];
+    array[size - 1] = first;
+}
+
+void *rotateArray(void *void_ptr)
+{
+    arguments *arg_ptr = // cast the void pointer to a struct arguments pointer
     int pos = arg_ptr->pos;
-    // Increment the element at position `pos` by 1
-    arg_ptr->array[pos]+=1;
+    // call the rotateLeft function once per thread to perform a left rotation
 
     return nullptr;
 }
@@ -28,15 +35,15 @@ int main()
     for (int i = 0; i < size; i++)
         std::cin >> array[i];
 
-    int nthreads = size ;
+    int nthreads = size / 2;
     pthread_t *tid = new pthread_t[nthreads];
     arguments *arg = new arguments[nthreads];
     for (int i = 0; i < nthreads; i++)
     {
         arg[i].pos = i;
         arg[i].size = size;
-        arg[i].array = array; // assign the address of the array of integers
-        if ( pthread_create(&tid[i],nullptr,incrementElement,&arg[i])/* call pthread_create */ )
+        arg[i].array = // assign the address of the array of integers
+        if ( /* call pthread_create */ )
         {
             fprintf(stderr, "Error creating thread\n");
             return 1;
@@ -44,9 +51,6 @@ int main()
     }
 
     // call pthread_join here
-    for(int i=0;i<nthreads;i++){
-        pthread_join(tid[i],nullptr);
-    }
 
     // DO NOT MODIFY THE LOOP BELOW
     for (int i = 0; i < size; i++)

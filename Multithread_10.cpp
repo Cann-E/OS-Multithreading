@@ -10,12 +10,12 @@ struct arguments
     int *array;
 };
 
-void *incrementElement(void *void_ptr)
+void *doubleEvenElement(void *void_ptr)
 {
-    arguments *arg_ptr = (struct arguments *)void_ptr;// cast the void pointer to a struct arguments pointer
+    arguments *arg_ptr = // cast the void pointer to a struct arguments pointer
     int pos = arg_ptr->pos;
-    // Increment the element at position `pos` by 1
-    arg_ptr->array[pos]+=1;
+
+    // Double the element at position `pos` only if it is even
 
     return nullptr;
 }
@@ -28,15 +28,16 @@ int main()
     for (int i = 0; i < size; i++)
         std::cin >> array[i];
 
-    int nthreads = size ;
+    int nthreads = size / 2;
     pthread_t *tid = new pthread_t[nthreads];
     arguments *arg = new arguments[nthreads];
+
     for (int i = 0; i < nthreads; i++)
     {
-        arg[i].pos = i;
+        arg[i].pos = i * 2; // Assign only even indices
         arg[i].size = size;
         arg[i].array = array; // assign the address of the array of integers
-        if ( pthread_create(&tid[i],nullptr,incrementElement,&arg[i])/* call pthread_create */ )
+        if ( /* call pthread_create */ )
         {
             fprintf(stderr, "Error creating thread\n");
             return 1;
@@ -44,9 +45,6 @@ int main()
     }
 
     // call pthread_join here
-    for(int i=0;i<nthreads;i++){
-        pthread_join(tid[i],nullptr);
-    }
 
     // DO NOT MODIFY THE LOOP BELOW
     for (int i = 0; i < size; i++)
