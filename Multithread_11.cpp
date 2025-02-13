@@ -19,10 +19,11 @@ void swap(int &value1, int &value2)
 
 void *reverseIntArray(void *void_ptr)
 {
-    arguments *arg_ptr = // cast the void pointer to a struct arguments pointer
+    arguments *arg_ptr = (struct arguments *)void_ptr;// cast the void pointer to a struct arguments pointer
     int pos1 = arg_ptr->pos;
     int pos2 = arg_ptr->size - 1 - arg_ptr->pos;
     // call the swap function to change the values between array[pos1] and array[pos2]
+    swap(arg_ptr->array[pos1],arg_ptr->array[pos2]);
 
     return nullptr;
 }
@@ -42,8 +43,8 @@ int main()
     {
         arg[i].pos = i;
         arg[i].size = size;
-        arg[i].array = // assign the address of the array of integers
-        if ( /* call pthread_create */ )
+        arg[i].array = array;// assign the address of the array of integers
+        if ( pthread_create(&tid[i],nullptr,reverseIntArray,&arg[i])/* call pthread_create */ )
         {
             fprintf(stderr, "Error creating thread\n");
             return 1;
@@ -51,6 +52,9 @@ int main()
     }
 
     // call pthread_join here
+    for(int i=0;i<nthreads;i++){
+        pthread_join(tid[i],nullptr);
+    }
 
     // DO NOT MODIFY THE LOOP BELOW
     for (int i = 0; i < size; i++)

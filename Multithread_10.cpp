@@ -12,10 +12,13 @@ struct arguments
 
 void *doubleEvenElement(void *void_ptr)
 {
-    arguments *arg_ptr = // cast the void pointer to a struct arguments pointer
+    arguments *arg_ptr = (struct arguments*)void_ptr;// cast the void pointer to a struct arguments pointer
     int pos = arg_ptr->pos;
 
     // Double the element at position `pos` only if it is even
+    if(arg_ptr->array[pos]%2==0){
+        arg_ptr->array[pos]*=2;
+    }
 
     return nullptr;
 }
@@ -37,7 +40,7 @@ int main()
         arg[i].pos = i * 2; // Assign only even indices
         arg[i].size = size;
         arg[i].array = array; // assign the address of the array of integers
-        if ( /* call pthread_create */ )
+        if ( pthread_create(&tid[i],nullptr,doubleEvenElement,&arg[i])/* call pthread_create */ )
         {
             fprintf(stderr, "Error creating thread\n");
             return 1;
@@ -45,6 +48,9 @@ int main()
     }
 
     // call pthread_join here
+    for(int i=0;i<nthreads;i++){
+        pthread_join(tid[i],nullptr);
+    }
 
     // DO NOT MODIFY THE LOOP BELOW
     for (int i = 0; i < size; i++)
