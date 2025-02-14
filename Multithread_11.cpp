@@ -53,7 +53,7 @@ int main()
 
     // call pthread_join here
     for(int i=0;i<nthreads;i++){
-        pthread_join(tid[i],nullptr);
+        pthread_join(tid[i],nullptr);//thread join
     }
 
     // DO NOT MODIFY THE LOOP BELOW
